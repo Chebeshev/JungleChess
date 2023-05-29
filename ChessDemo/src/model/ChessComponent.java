@@ -22,7 +22,7 @@ public abstract class ChessComponent extends JComponent {
      */
 
 //    private static final Dimension CHESSGRID_SIZE = new Dimension(1080 / 4 * 3 / 8, 1080 / 4 * 3 / 8);
-    private static final Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK,Color.BLUE};
+    private static final Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK};
     /**
      * handle click event
      */
@@ -68,6 +68,14 @@ public abstract class ChessComponent extends JComponent {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     /**
@@ -118,9 +126,7 @@ public abstract class ChessComponent extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponents(g);
-        System.out.printf("repaint chess [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
-        Color squareColor = BACKGROUND_COLORS[(chessboardPoint.getX() + chessboardPoint.getY()) % 2];
-        g.setColor(squareColor);
+        g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
 }

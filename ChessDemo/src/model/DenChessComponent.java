@@ -11,8 +11,8 @@ import java.io.IOException;
  */
 public class DenChessComponent extends ChessComponent {
 
-    public DenChessComponent(ChessboardPoint chessboardPoint, Point location, ClickController listener, int size) {
-        super(chessboardPoint, location, ChessColor.NONE, listener, size);
+    public DenChessComponent(ChessboardPoint chessboardPoint, ChessColor color, Point location, ClickController listener, int size) {
+        super(chessboardPoint, location, color, listener, size);
     }
 
     @Override
@@ -25,5 +25,11 @@ public class DenChessComponent extends ChessComponent {
         //No resource!
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponents(g);
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+    }
 }
 

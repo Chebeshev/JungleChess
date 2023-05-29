@@ -79,7 +79,7 @@ public class WolfChessComponent extends ChessComponent {
         ChessboardPoint source = getChessboardPoint();
         if (chessComponents[destination.getX()][destination.getY()] instanceof RiverChessComponent)
             return false;
-        if (chessComponents[destination.getX()][destination.getY()].rank > this.rank)
+        if (chessComponents[destination.getX()][destination.getY()].getRank() > this.rank)
             return false;
         if (chessComponents[destination.getX()][destination.getY()] instanceof DenChessComponent){
             if ((chessComponents[destination.getX()][destination.getY()]).chessColor != this.chessColor)
@@ -96,6 +96,13 @@ public class WolfChessComponent extends ChessComponent {
         return false;
     }
 
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
     /**
      * 注意这个方法，每当窗体受到了形状的变化，或者是通知要进行绘图的时候，就会调用这个方法进行画图。
      *

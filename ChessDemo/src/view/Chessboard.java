@@ -27,6 +27,8 @@ public class Chessboard extends JComponent {
     private static final int CHESSBOARD_COL = 7;
 
     private final ChessComponent[][] chessComponents = new ChessComponent[CHESSBOARD_ROW][CHESSBOARD_COL];
+    public static final int[] riverRegionRow = {3,3,4,4,5,5,3,3,4,4,5,5};
+    public static final int[] riverRegionCol = {1,2,1,2,1,2,4,5,4,5,4,5};
     public static ChessColor currentColor = ChessColor.RED;
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
@@ -70,6 +72,14 @@ public class Chessboard extends JComponent {
         initRiverOnBoard(4,5);
         initRiverOnBoard(5,4);
         initRiverOnBoard(5,5);
+        initTrapOnBoard(0,2,ChessColor.RED);
+        initTrapOnBoard(0,4,ChessColor.RED);
+        initTrapOnBoard(1,3,ChessColor.RED);
+        initTrapOnBoard(8,2,ChessColor.BLUE);
+        initTrapOnBoard(8,4,ChessColor.BLUE);
+        initTrapOnBoard(7,3,ChessColor.BLUE);
+        initDenOnBoard(0,3,ChessColor.RED);
+        initDenOnBoard(8,3,ChessColor.BLUE);
     }
 
     public ChessComponent[][] getChessComponents() {
@@ -91,8 +101,12 @@ public class Chessboard extends JComponent {
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
-        if (!(chess2 instanceof EmptySlotComponent)) {
+        if (!(chess2 instanceof EmptySlotComponent) && !(chess2 instanceof RiverChessComponent) &&
+        !(chess2 instanceof TrapChessComponent) && !(chess2 instanceof DenChessComponent)) {
             remove(chess2);
+            add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+        }
+        if (chess2 instanceof RiverChessComponent || chess1 instanceof RiverChessComponent) {
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
         }
         chess1.swapLocation(chess2);
@@ -167,6 +181,18 @@ public class Chessboard extends JComponent {
 
     private void initRiverOnBoard(int row, int col) {
         ChessComponent chessComponent = new RiverChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initTrapOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new TrapChessComponent(new ChessboardPoint(row, col), color, calculatePoint(row, col), clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initDenOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new DenChessComponent(new ChessboardPoint(row, col), color, calculatePoint(row, col), clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }

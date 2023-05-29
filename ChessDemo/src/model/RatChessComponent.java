@@ -1,5 +1,6 @@
 package model;
 
+import view.Chessboard;
 import view.ChessboardPoint;
 import controller.ClickController;
 
@@ -77,10 +78,24 @@ public class RatChessComponent extends ChessComponent {
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
-        if (chessComponents[destination.getX()][destination.getY()].rank > this.rank)
+        if (chessComponents[destination.getX()][destination.getY()] instanceof RiverChessComponent)
+            rank = 9;
+        boolean flag = false;
+        for (int i = 0; i < 12; i++) {
+            if (source.getX() == Chessboard.riverRegionRow[i] && source.getY() == Chessboard.riverRegionCol[i]){
+                flag = true;
+                break;
+            }
+        }
+        if (flag){
+
+        }
+        if (chessComponents[destination.getX()][destination.getY()].getRank() == 8)
+            return true;
+        if (chessComponents[destination.getX()][destination.getY()].getRank() > this.rank)
             return false;
         if (chessComponents[destination.getX()][destination.getY()] instanceof DenChessComponent){
-            if ((chessComponents[destination.getX()][destination.getY()]).chessColor != this.chessColor)
+            if ((chessComponents[destination.getX()][destination.getY()]).chessColor == this.chessColor)
                 return false;
         }
         if (source.getX() == destination.getX()) {
@@ -92,6 +107,14 @@ public class RatChessComponent extends ChessComponent {
                 return true;
         }
         return false;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     /**
