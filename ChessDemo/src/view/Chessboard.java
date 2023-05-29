@@ -27,7 +27,7 @@ public class Chessboard extends JComponent {
     private static final int CHESSBOARD_COL = 7;
 
     private final ChessComponent[][] chessComponents = new ChessComponent[CHESSBOARD_ROW][CHESSBOARD_COL];
-    private ChessColor currentColor = ChessColor.RED;
+    public static ChessColor currentColor = ChessColor.RED;
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
     private final int CHESS_SIZE;
