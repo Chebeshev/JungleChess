@@ -19,6 +19,7 @@ public class WolfChessComponent extends ChessComponent {
      */
     private static Image WHITE;
     private static Image BLACK;
+    public int rank = 4;
 
     /**
      * 车棋子对象自身的图片，是上面两种中的一种
@@ -76,26 +77,23 @@ public class WolfChessComponent extends ChessComponent {
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
-        if (source.getX() == destination.getX()) {
-            int row = source.getX();
-            for (int col = Math.min(source.getY(), destination.getY()) + 1;
-                 col < Math.max(source.getY(), destination.getY()); col++) {
-                if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
-                    return false;
-                }
-            }
-        } else if (source.getY() == destination.getY()) {
-            int col = source.getY();
-            for (int row = Math.min(source.getX(), destination.getX()) + 1;
-                 row < Math.max(source.getX(), destination.getX()); row++) {
-                if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
-                    return false;
-                }
-            }
-        } else { // Not on the same row or the same column.
+        if (chessComponents[destination.getX()][destination.getY()] instanceof RiverChessComponent)
             return false;
+        if (chessComponents[destination.getX()][destination.getY()].rank > this.rank)
+            return false;
+        if (chessComponents[destination.getX()][destination.getY()] instanceof DenChessComponent){
+            if ((chessComponents[destination.getX()][destination.getY()]).chessColor != this.chessColor)
+                return false;
         }
-        return true;
+        if (source.getX() == destination.getX()) {
+            if (Math.abs(source.getY() - destination.getY()) == 1)
+                return true;
+        }
+        if (source.getY() == destination.getY()) {
+            if (Math.abs(source.getX() - destination.getX()) == 1)
+                return true;
+        }
+        return false;
     }
 
     /**
