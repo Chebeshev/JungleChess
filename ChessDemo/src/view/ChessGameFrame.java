@@ -50,13 +50,15 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         gameController = new GameController(chessboard);
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
         add(chessboard);
+        add(chessboard.hintLabel);
+        add(chessboard.roundLabel);
     }
 
     /**
      * 在游戏面板中添加标签
      */
     private void addLabel() {
-        JLabel statusLabel = new JLabel("Sample label");
+        JLabel statusLabel = new JLabel("Enjoy yourself~");
         statusLabel.setLocation(HEIGTH, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
@@ -70,7 +72,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     private void addHelloButton() {
         JButton button = new JButton("Show Hello Here");
         button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
-        button.setLocation(HEIGTH, HEIGTH / 10 + 120);
+        button.setLocation(760, 240);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -113,7 +115,15 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
         } else if (cmd.equals("restart")) {
             chessboard.setVisible(false);
-            Chessboard.currentColor = ChessColor.RED;
+            remove(chessboard.hintLabel);
+            remove(chessboard.roundLabel);
+            Chessboard.currentColor = ChessColor.BLUE;
+            ClickController.Round = 0;
+            Chessboard.IsBlueReachDen = false;
+            Chessboard.IsRedReachDen = false;
+            Chessboard.GameOver = false;
+            Chessboard.NumberOfBlue = 8;
+            Chessboard.NumberOfRed = 8;
             addChessboard();
         } else if (cmd.equals("initialize")) {
 
@@ -137,6 +147,8 @@ public class ChessGameFrame extends JFrame implements ActionListener {
                     file=fileChooser.getSelectedFile().getName();
                     SaveAndLoad.load(file);
                 }
+            chessboard.hintLabel.setText(chessboard.getCurrentColor() == ChessColor.RED ? "RED Chess Round" : "BLUE Chess Round");
+            chessboard.roundLabel.setText("Round " + ClickController.Round);
         }
     }
 }

@@ -14,6 +14,7 @@ public class ClickController {
     }
 
     public void onClick(ChessComponent chessComponent) {
+        if (!Chessboard.GameOver){
         if (first == null) {
             if (handleFirst(chessComponent)) {
                 chessComponent.setSelected(true);
@@ -34,6 +35,7 @@ public class ClickController {
                 first.setSelected(false);
                 first = null;
             }
+        }
         }
     }
 

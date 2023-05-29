@@ -78,35 +78,64 @@ public class RatChessComponent extends ChessComponent {
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
-        if (chessComponents[destination.getX()][destination.getY()] instanceof RiverChessComponent)
-            rank = 9;
+        rank = 1;
+        if (chessComponents[destination.getX()][destination.getY()] instanceof RiverChessComponent){
+            rank = 9;}
         boolean flag = false;
+        boolean Xi = false;
         for (int i = 0; i < 12; i++) {
             if (source.getX() == Chessboard.riverRegionRow[i] && source.getY() == Chessboard.riverRegionCol[i]){
                 flag = true;
                 break;
             }
         }
-        if (flag){
-
+        boolean Jinghua = true;
+        for (int i = 0; i < 12; i++) {
+            if (destination.getX() == Chessboard.riverRegionRow[i] || destination.getY() == Chessboard.riverRegionCol[i]){
+                Jinghua = false;
+                break;
+            }
         }
         if (chessComponents[destination.getX()][destination.getY()].getRank() == 8)
-            return true;
-        if (chessComponents[destination.getX()][destination.getY()].getRank() > this.rank)
-            return false;
+            Xi=true;
         if (chessComponents[destination.getX()][destination.getY()] instanceof DenChessComponent){
             if ((chessComponents[destination.getX()][destination.getY()]).chessColor == this.chessColor)
                 return false;
         }
         if (source.getX() == destination.getX()) {
             if (Math.abs(source.getY() - destination.getY()) == 1)
-                return true;
+                Xi=true;
         }
         if (source.getY() == destination.getY()) {
             if (Math.abs(source.getX() - destination.getX()) == 1)
-                return true;
+                Xi=true;
         }
-        return false;
+
+        if(flag&&Jinghua){
+            if(Xi){rank=1;
+                if (chessComponents[destination.getX()][destination.getY()].getRank() >= 1){
+                    rank=9;
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        else{
+            if(Xi){
+                if(chessComponents[destination.getX()][destination.getY()].getRank() > this.rank && chessComponents[destination.getX()][destination.getY()].getRank()!=8 ){
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public int getRank() {

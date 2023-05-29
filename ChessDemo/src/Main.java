@@ -1,11 +1,11 @@
-import view.ChessGameFrame;
+import view.StartFrame;
 
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ChessGameFrame mainFrame = new ChessGameFrame(1000, 760);
+            StartFrame mainFrame = new StartFrame(400, 400);
             mainFrame.setVisible(true);
         });
     }

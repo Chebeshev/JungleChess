@@ -82,7 +82,7 @@ public class LionChessComponent extends ChessComponent {
         if (chessComponents[destination.getX()][destination.getY()].getRank() > this.rank)
             return false;
         if (chessComponents[destination.getX()][destination.getY()] instanceof DenChessComponent){
-            if ((chessComponents[destination.getX()][destination.getY()]).chessColor != this.chessColor)
+            if ((chessComponents[destination.getX()][destination.getY()]).chessColor == this.chessColor)
                 return false;
         }
         if (source.getX() > 0 && chessComponents[source.getX() - 1][source.getY()] instanceof RiverChessComponent){

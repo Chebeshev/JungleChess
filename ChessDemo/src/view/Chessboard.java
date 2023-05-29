@@ -29,10 +29,19 @@ public class Chessboard extends JComponent {
     private final ChessComponent[][] chessComponents = new ChessComponent[CHESSBOARD_ROW][CHESSBOARD_COL];
     public static final int[] riverRegionRow = {3,3,4,4,5,5,3,3,4,4,5,5};
     public static final int[] riverRegionCol = {1,2,1,2,1,2,4,5,4,5,4,5};
-    public static ChessColor currentColor = ChessColor.RED;
+    public static ChessColor currentColor = ChessColor.BLUE;
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
     private final int CHESS_SIZE;
+    public static int NumberOfRed = 8;
+    public static int NumberOfBlue = 8;
+    public static JLabel hintLabel;
+    public static JLabel roundLabel;
+    public static boolean IsRedReachDen = false;
+    public static boolean IsBlueReachDen = false;
+    public static boolean GameOver = false;
+
+
 
 
     public Chessboard(int width, int height) {
@@ -80,6 +89,16 @@ public class Chessboard extends JComponent {
         initTrapOnBoard(7,3,ChessColor.BLUE);
         initDenOnBoard(0,3,ChessColor.RED);
         initDenOnBoard(8,3,ChessColor.BLUE);
+
+        hintLabel = new JLabel("Blue Chess Round");
+        hintLabel.setLocation(560, 100);
+        hintLabel.setSize(200, 60);
+        hintLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
+        hintLabel.setVisible(true);
+        roundLabel = new JLabel("Round "+ClickController.Round);
+        roundLabel.setLocation(560,200);
+        roundLabel.setSize(200,60);
+        roundLabel.setFont(new Font("Rockwell", Font.BOLD,20));
     }
 
     public ChessComponent[][] getChessComponents() {
@@ -103,6 +122,11 @@ public class Chessboard extends JComponent {
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
         if (!(chess2 instanceof EmptySlotComponent) && !(chess2 instanceof RiverChessComponent) &&
         !(chess2 instanceof TrapChessComponent) && !(chess2 instanceof DenChessComponent)) {
+            if(chess2.getChessColor() == ChessColor.RED){
+                NumberOfRed--;
+            }else{
+                NumberOfBlue--;
+            }
             remove(chess2);
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
         }
@@ -110,6 +134,13 @@ public class Chessboard extends JComponent {
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
         }
         chess1.swapLocation(chess2);
+        if(chess2 instanceof DenChessComponent){
+            if(chess2.getChessColor() == ChessColor.RED){
+                IsBlueReachDen = true;
+            }else{
+                IsRedReachDen = true;
+            }
+        }
         int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
         chessComponents[row1][col1] = chess1;
         int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
@@ -117,6 +148,27 @@ public class Chessboard extends JComponent {
 
         chess1.repaint();
         chess2.repaint();
+
+        ClickController.Round+=0.5;
+        IsWin();
+    }
+
+
+    public void IsWin(){
+        if(NumberOfBlue==0 || IsRedReachDen){
+            GameOver = true;
+            SwingUtilities.invokeLater(() -> {
+                RedWinFrame mainFrame = new RedWinFrame(400, 400);
+                mainFrame.setVisible(true);
+            });
+        }
+        else if(NumberOfRed==0 || IsBlueReachDen){
+            GameOver = true;
+            SwingUtilities.invokeLater(() -> {
+                BlueWinFrame mainFrame = new BlueWinFrame(400, 400);
+                mainFrame.setVisible(true);
+            });
+        }
     }
 
     public void initiateEmptyChessboard() {
@@ -129,6 +181,8 @@ public class Chessboard extends JComponent {
 
     public void swapColor() {
         currentColor = currentColor == ChessColor.RED ? ChessColor.BLUE : ChessColor.RED;
+        hintLabel.setText(getCurrentColor() == ChessColor.RED ? "RED Chess Round" : "BLUE Chess Round");
+        roundLabel.setText("Round " + ClickController.Round);
     }
 
     public void initElephantOnBoard(int row, int col, ChessColor color) {
