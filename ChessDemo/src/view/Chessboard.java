@@ -131,67 +131,67 @@ public class Chessboard extends JComponent {
         currentColor = currentColor == ChessColor.RED ? ChessColor.BLUE : ChessColor.RED;
     }
 
-    private void initElephantOnBoard(int row, int col, ChessColor color) {
+    public void initElephantOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new ElephantChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initLionOnBoard(int row, int col, ChessColor color) {
+    public void initLionOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new LionChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initTigerOnBoard(int row, int col, ChessColor color) {
+    public void initTigerOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new TigerChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initLeopardOnBoard(int row, int col, ChessColor color) {
+    public void initLeopardOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new LeopardChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initWolfOnBoard(int row, int col, ChessColor color) {
+    public void initWolfOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new WolfChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initDogOnBoard(int row, int col, ChessColor color) {
+    public void initDogOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new DogChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initCatOnBoard(int row, int col, ChessColor color) {
+    public void initCatOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new CatChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initRatOnBoard(int row, int col, ChessColor color) {
+    public void initRatOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new RatChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initRiverOnBoard(int row, int col) {
+    public void initRiverOnBoard(int row, int col) {
         ChessComponent chessComponent = new RiverChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initTrapOnBoard(int row, int col, ChessColor color) {
+    public void initTrapOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new TrapChessComponent(new ChessboardPoint(row, col), color, calculatePoint(row, col), clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
-    private void initDenOnBoard(int row, int col, ChessColor color) {
+    public void initDenOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new DenChessComponent(new ChessboardPoint(row, col), color, calculatePoint(row, col), clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);

@@ -3,11 +3,9 @@ package view;
 import controller.ClickController;
 import model.*;
 
-import javax.swing.*;
 import java.io.*;
 
 public class SaveAndLoad {
-    public static boolean valid=false;
 
     public static void Save(Chessboard chessboard,String filePath){
         ChessComponent[][] chessComponents = chessboard.getChessComponents();
@@ -65,6 +63,21 @@ public class SaveAndLoad {
                     else
                         elements[i][j] = 16;
                 }
+                else if (item instanceof TrapChessComponent){
+                    if (item.getChessColor() == ChessColor.RED)
+                        elements[i][j] = 17;
+                    else
+                        elements[i][j] = 18;
+                }
+                else if (item instanceof DenChessComponent){
+                    if (item.getChessColor() == ChessColor.RED)
+                        elements[i][j] = 19;
+                    else
+                        elements[i][j] = 20;
+                }
+                else if (item instanceof RiverChessComponent){
+                    elements[i][j] = 21;
+                }
             }
         }
 
@@ -83,7 +96,87 @@ public class SaveAndLoad {
 
 
     public static void load(String filePath){
-
+        String rows;
+        String[] row;
+        try {String s = readFile(filePath);
+            String[] split = s.split("\n");
+                if(split[9].equals("RED")){Chessboard.currentColor=ChessColor.RED;}
+                if(split[9].equals("BLUE")){Chessboard.currentColor=ChessColor.BLUE;}
+                ClickController.Round = Float.parseFloat(split[10]);
+                ChessGameFrame.chessboard.initiateEmptyChessboard();
+                for (int i=0;i<9;i++){
+                    rows = split[i];
+                    row = rows.split(" ");
+                    for (int j=0;j<7;j++){
+                        int data = Integer.parseInt(row[j]);
+                        if (data==1)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                        ChessGameFrame.chessboard.initElephantOnBoard(i,j,ChessColor.RED);}
+                        else if (data==2)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initElephantOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==3)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initLionOnBoard(i,j,ChessColor.RED);}
+                        else if (data==4)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initLionOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==5)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initTigerOnBoard(i,j,ChessColor.RED);}
+                        else if (data==6)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initTigerOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==7)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initLeopardOnBoard(i,j,ChessColor.RED);}
+                        else if (data==8)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initLeopardOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==9)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initWolfOnBoard(i,j,ChessColor.RED);}
+                        else if (data==10)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initWolfOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==11)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initDogOnBoard(i,j,ChessColor.RED);}
+                        else if (data==12)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initDogOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==13)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initCatOnBoard(i,j,ChessColor.RED);}
+                        else if (data==14)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initCatOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==15)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initRatOnBoard(i,j,ChessColor.RED);}
+                        else if (data==16)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initRatOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==17)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initTrapOnBoard(i,j,ChessColor.RED);}
+                        else if (data==18)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initTrapOnBoard(i,j,ChessColor.BLUE);}
+                        else if (data==19)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initDenOnBoard(i,j,ChessColor.RED);}
+                        else if (data==20)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initDenOnBoard(i,j,ChessColor.BLUE);}
+                        else if(data==21)
+                        {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
+                            ChessGameFrame.chessboard.initRiverOnBoard(i,j);}
+                    }
+                }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

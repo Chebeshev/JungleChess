@@ -2,6 +2,7 @@ package view;
 
 import controller.ClickController;
 import controller.GameController;
+import model.ChessColor;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,7 +19,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     private final int HEIGTH;
     public final int CHESSBOARD_SIZE;
     private GameController gameController;
-    Chessboard chessboard;
+    static Chessboard chessboard;
 
     public ChessGameFrame(int width, int height) {
         setTitle("2022 CS102A Project Demo"); //设置标题
@@ -37,6 +38,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         addHelloButton();
         addSaveButton();
         addLoadButton();
+        addRestartButton();
     }
 
 
@@ -84,18 +86,24 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         add(saveButton);
     }
 
+    private void addRestartButton() {
+        JButton saveButton = new JButton("Restart");
+        saveButton.addActionListener(this);
+        saveButton.setLocation(760, 480);
+        saveButton.setSize(200, 60);
+        saveButton.setActionCommand("restart");
+        saveButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(saveButton);
+    }
+
     private void addLoadButton() {
         JButton button = new JButton("Load");
-        button.setLocation(HEIGTH, HEIGTH / 10 + 240);
+        button.setLocation(760, 320);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
-
-        button.addActionListener(e -> {
-            System.out.println("Click load");
-            String path = JOptionPane.showInputDialog(this, "Input Path here");
-            gameController.loadGameFromFile(path);
-        });
+        button.setActionCommand("load");
+        button.addActionListener(this);
     }
 
     @Override
@@ -104,7 +112,9 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         if (cmd.equals("withdraw")) {
 
         } else if (cmd.equals("restart")) {
-
+            chessboard.setVisible(false);
+            Chessboard.currentColor = ChessColor.RED;
+            addChessboard();
         } else if (cmd.equals("initialize")) {
 
         } else if (cmd.equals("save")) {
@@ -118,7 +128,15 @@ public class ChessGameFrame extends JFrame implements ActionListener {
                 SaveAndLoad.Save(chessboard,file);
             }
         } else if (cmd.equals("load")) {
-
+                JFileChooser fileChooser=new JFileChooser();
+                FileNameExtensionFilter filter=new FileNameExtensionFilter("text","txt");
+                fileChooser.setFileFilter(filter);
+                int returnVal= fileChooser.showOpenDialog(getParent());
+                String file="";
+                if(returnVal==JFileChooser.APPROVE_OPTION){
+                    file=fileChooser.getSelectedFile().getName();
+                    SaveAndLoad.load(file);
+                }
         }
     }
 }
