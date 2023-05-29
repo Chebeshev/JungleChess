@@ -42,8 +42,34 @@ public class Chessboard extends JComponent {
         initiateEmptyChessboard();
 
         // FIXME: Initialize chessboard for testing only.
-        initElephantOnBoard(0, 0, ChessColor.RED);
-        initElephantOnBoard(0, CHESSBOARD_COL - 1, ChessColor.RED);
+        initElephantOnBoard(2, 6, ChessColor.RED);
+        initElephantOnBoard(6, 0, ChessColor.BLUE);
+        initLionOnBoard(0,0,ChessColor.RED);
+        initLionOnBoard(8,6,ChessColor.BLUE);
+        initTigerOnBoard(0,6,ChessColor.RED);
+        initTigerOnBoard(8,0,ChessColor.BLUE);
+        initLeopardOnBoard(2,2,ChessColor.RED);
+        initLeopardOnBoard(6,4,ChessColor.BLUE);
+        initWolfOnBoard(2,4,ChessColor.RED);
+        initWolfOnBoard(6,2,ChessColor.BLUE);
+        initDogOnBoard(1,1,ChessColor.RED);
+        initDogOnBoard(7,5,ChessColor.BLUE);
+        initCatOnBoard(1,5,ChessColor.RED);
+        initCatOnBoard(7,1,ChessColor.BLUE);
+        initRatOnBoard(2,0,ChessColor.RED);
+        initRatOnBoard(6,6,ChessColor.BLUE);
+        initRiverOnBoard(3,1);
+        initRiverOnBoard(3,2);
+        initRiverOnBoard(4,1);
+        initRiverOnBoard(4,2);
+        initRiverOnBoard(5,1);
+        initRiverOnBoard(5,2);
+        initRiverOnBoard(3,4);
+        initRiverOnBoard(3,5);
+        initRiverOnBoard(4,4);
+        initRiverOnBoard(4,5);
+        initRiverOnBoard(5,4);
+        initRiverOnBoard(5,5);
     }
 
     public ChessComponent[][] getChessComponents() {
@@ -88,7 +114,7 @@ public class Chessboard extends JComponent {
     }
 
     public void swapColor() {
-        currentColor = currentColor == ChessColor.RED ? ChessColor.WHITE : ChessColor.RED;
+        currentColor = currentColor == ChessColor.RED ? ChessColor.BLUE : ChessColor.RED;
     }
 
     private void initElephantOnBoard(int row, int col, ChessColor color) {
@@ -135,6 +161,12 @@ public class Chessboard extends JComponent {
 
     private void initRatOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new RatChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initRiverOnBoard(int row, int col) {
+        ChessComponent chessComponent = new RiverChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }

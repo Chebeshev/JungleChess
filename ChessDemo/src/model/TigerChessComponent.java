@@ -50,7 +50,7 @@ public class TigerChessComponent extends ChessComponent {
     private void initiateTigerImage(ChessColor color) {
         try {
             loadResource();
-            if (color == ChessColor.WHITE) {
+            if (color == ChessColor.BLUE) {
                 Image = WHITE;
             } else if (color == ChessColor.RED) {
                 Image = BLACK;
