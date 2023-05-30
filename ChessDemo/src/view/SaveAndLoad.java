@@ -3,9 +3,11 @@ package view;
 import controller.ClickController;
 import model.*;
 
+import javax.swing.*;
 import java.io.*;
 
 public class SaveAndLoad {
+    public static boolean valid=false;
 
     public static void Save(Chessboard chessboard,String filePath){
         ChessComponent[][] chessComponents = chessboard.getChessComponents();
@@ -99,19 +101,70 @@ public class SaveAndLoad {
         saveFile(textStr,filePath);
     }
 
-
     public static void load(String filePath){
-        Chessboard.NumberOfRed = 0;
-        Chessboard.NumberOfBlue = 0;
         String rows;
         String[] row;
+        boolean tf1=true;
+        boolean tf2=true;
+        boolean tf3=true;
+        Chessboard.NumberOfRed = 0;
+        Chessboard.NumberOfBlue = 0;
         try {String s = readFile(filePath);
             String[] split = s.split("\n");
+            if (split.length>=9){
+                for (int i=0;i<9;i++){
+                    rows = split[i];
+                    row = rows.split(" ");
+                    if (row.length!=7){tf1=false;}}
+                if (!tf1){
+                    SwingUtilities.invokeLater(() -> {
+                        LoadErrorFrame loadErrorFrame= new LoadErrorFrame(500,380);
+                        loadErrorFrame.setVisible(true);
+                        loadErrorFrame.getStatusLabel().setText("Load Error 102!");
+                    });
+                return;}
+                if (tf1){
+                    for (int i = 0; i < 9; i++) {
+                        rows = split[i];
+                        row = rows.split(" ");
+                        for (int j = 0; j < 7; j++) {
+                            int data = Integer.parseInt(row[j]);
+                            if (21<data||data<0){tf2=false;}}}
+                    if (!tf2){SwingUtilities.invokeLater(() -> {
+                        LoadErrorFrame loadErrorFrame= new LoadErrorFrame(500,380);
+                        loadErrorFrame.setVisible(true);
+                        loadErrorFrame.getStatusLabel().setText("Load Error 103!");
+                    });
+                    return;}}
+                if (tf1&&tf2){
+                    if (split.length>=10){
+                        if ((!split[9].equals("RED"))&&(!split[9].equals("BLUE"))){tf3=false;
+                            SwingUtilities.invokeLater(() -> {
+                                LoadErrorFrame loadErrorFrame= new LoadErrorFrame(500,380);
+                                loadErrorFrame.setVisible(true);
+                                loadErrorFrame.getStatusLabel().setText("Load Error 104!");
+                            });
+                        return;}}
+                    else {SwingUtilities.invokeLater(() -> {
+                        LoadErrorFrame loadErrorFrame= new LoadErrorFrame(500,380);
+                        loadErrorFrame.setVisible(true);
+                        loadErrorFrame.getStatusLabel().setText("Load Error 104!");
+                    });
+                    return;}}
+                if (tf1&&tf2&&tf3){valid=true;}}
+            else {
+                SwingUtilities.invokeLater(() -> {
+                    LoadErrorFrame loadErrorFrame= new LoadErrorFrame(500,380);
+                    loadErrorFrame.setVisible(true);
+                    loadErrorFrame.getStatusLabel().setText("Load Error 102!");
+                });
+            return;}
+            if (valid){
                 if(split[9].equals("RED")){Chessboard.currentColor=ChessColor.RED;}
                 if(split[9].equals("BLUE")){Chessboard.currentColor=ChessColor.BLUE;}
                 ClickController.Round = Float.parseFloat(split[10]);
                 Chessboard.NumberOfRed = (int)(Float.parseFloat(split[11]));
-            Chessboard.NumberOfBlue = (int)(Float.parseFloat(split[12]));
+                Chessboard.NumberOfBlue = (int)(Float.parseFloat(split[12]));
                 ChessGameFrame.chessboard.initiateEmptyChessboard();
                 for (int i=0;i<9;i++){
                     rows = split[i];
@@ -120,25 +173,25 @@ public class SaveAndLoad {
                         int data = Integer.parseInt(row[j]);
                         if (data==1)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
-                        ChessGameFrame.chessboard.initElephantOnBoard(i,j,ChessColor.RED);
+                            ChessGameFrame.chessboard.initElephantOnBoard(i,j,ChessColor.RED);
                         }
                         else if (data==2)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initElephantOnBoard(i,j,ChessColor.BLUE);
-                         }
+                        }
                         else if (data==3)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initLionOnBoard(i,j,ChessColor.RED);
-                           }
+                        }
                         else if (data==4)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initLionOnBoard(i,j,ChessColor.BLUE);
-                           ;
+                            ;
                         }
                         else if (data==5)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initTigerOnBoard(i,j,ChessColor.RED);
-                          }
+                        }
                         else if (data==6)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initTigerOnBoard(i,j,ChessColor.BLUE);
@@ -146,19 +199,19 @@ public class SaveAndLoad {
                         else if (data==7)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initLeopardOnBoard(i,j,ChessColor.RED);
-                          }
+                        }
                         else if (data==8)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initLeopardOnBoard(i,j,ChessColor.BLUE);
-                          }
+                        }
                         else if (data==9)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initWolfOnBoard(i,j,ChessColor.RED);
-                      }
+                        }
                         else if (data==10)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initWolfOnBoard(i,j,ChessColor.BLUE);
-                           }
+                        }
                         else if (data==11)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initDogOnBoard(i,j,ChessColor.RED);
@@ -166,11 +219,11 @@ public class SaveAndLoad {
                         else if (data==12)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initDogOnBoard(i,j,ChessColor.BLUE);
-                         }
+                        }
                         else if (data==13)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initCatOnBoard(i,j,ChessColor.RED);
-                          }
+                        }
                         else if (data==14)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initCatOnBoard(i,j,ChessColor.BLUE);
@@ -178,39 +231,37 @@ public class SaveAndLoad {
                         else if (data==15)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initRatOnBoard(i,j,ChessColor.RED);
-                         }
+                        }
                         else if (data==16)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initRatOnBoard(i,j,ChessColor.BLUE);
-                         }
+                        }
                         else if (data==17)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initTrapOnBoard(i,j,ChessColor.RED);
-                       }
+                        }
                         else if (data==18)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initTrapOnBoard(i,j,ChessColor.BLUE);
-                         }
+                        }
                         else if (data==19)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initDenOnBoard(i,j,ChessColor.RED);
-                         }
+                        }
                         else if (data==20)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initDenOnBoard(i,j,ChessColor.BLUE);
-                         }
+                        }
                         else if(data==21)
                         {ChessGameFrame.chessboard.getChessComponents()[i][j].setVisible(false);
                             ChessGameFrame.chessboard.initRiverOnBoard(i,j);}
                     }
                 }
+                }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-
-
 
     public static String readFile(String filePath) throws IOException {
         File file = new File(filePath);

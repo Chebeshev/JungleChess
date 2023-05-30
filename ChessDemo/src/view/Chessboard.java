@@ -20,6 +20,8 @@ public class Chessboard extends JComponent {
     public static final int[] riverRegionCol = {1,2,1,2,1,2,4,5,4,5,4,5};
     public static final int[] trapRegionRow = {0,0,1,7,8,8};
     public static final int[] trapRegionCol = {2,4,3,3,2,4};
+    public static final int[] denRegionRow = {0,8};
+    public static final int[] denRegionCol = {3,3};
     public static ChessColor currentColor = ChessColor.BLUE;
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
@@ -45,6 +47,15 @@ public class Chessboard extends JComponent {
     public boolean IsTrap(int x, int y){
         for (int i = 0; i < 6; i++) {
             if (x == Chessboard.trapRegionRow[i] && y == Chessboard.trapRegionCol[i]){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean IsInDen(int x, int y){
+        for (int i = 0; i < 2; i++) {
+            if (x == Chessboard.denRegionRow[i] && y == Chessboard.denRegionCol[i]){
                 return true;
             }
         }
@@ -88,12 +99,12 @@ public class Chessboard extends JComponent {
         initRiverOnBoard(4,5);
         initRiverOnBoard(5,4);
         initRiverOnBoard(5,5);
-        initTrapOnBoard(0,2,ChessColor.RED);
-        initTrapOnBoard(0,4,ChessColor.RED);
-        initTrapOnBoard(1,3,ChessColor.RED);
-        initTrapOnBoard(8,2,ChessColor.BLUE);
-        initTrapOnBoard(8,4,ChessColor.BLUE);
-        initTrapOnBoard(7,3,ChessColor.BLUE);
+        initTrapOnBoard(0,2,ChessColor.NONE);
+        initTrapOnBoard(0,4,ChessColor.NONE);
+        initTrapOnBoard(1,3,ChessColor.NONE);
+        initTrapOnBoard(8,2,ChessColor.NONE);
+        initTrapOnBoard(8,4,ChessColor.NONE);
+        initTrapOnBoard(7,3,ChessColor.NONE);
         initDenOnBoard(0,3,ChessColor.RED);
         initDenOnBoard(8,3,ChessColor.BLUE);
 
@@ -167,19 +178,23 @@ public class Chessboard extends JComponent {
             System.out.println("ntmd");
             //add(chess2 = new RiverChessComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
         }
-
         else {
             System.out.println("Haha");
         }
-        chess1.swapLocation(chess2);
-
-        if(chess2 instanceof DenChessComponent){
-            if(chess2.getChessColor() == ChessColor.RED){
+        //Den
+        if(IsInDen(chess2.getChessboardPoint().getX(),chess2.getChessboardPoint().getY())){
+            if(chess2.getChessboardPoint().getX() == 0 &&chess2.getChessboardPoint().getY()==3 ){
                 IsBlueReachDen = true;
-            }else{
-                IsRedReachDen = true;
+                System.out.println("WinB");
             }
+            else if (chess2.getChessboardPoint().getX() == 8 &&chess2.getChessboardPoint().getY()==3 ){
+                IsRedReachDen = true;
+                System.out.println("WinR");}
+            System.out.println("Win");
         }
+
+
+        chess1.swapLocation(chess2);
         int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
         chessComponents[row1][col1] = chess1;
         int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
@@ -197,7 +212,8 @@ public class Chessboard extends JComponent {
     }
 
 
-    public void IsWin(){
+    public void
+    IsWin(){
         if(NumberOfBlue==0 || IsRedReachDen){
             GameOver = true;
             SwingUtilities.invokeLater(() -> {
