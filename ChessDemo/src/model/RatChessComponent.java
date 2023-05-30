@@ -81,38 +81,38 @@ public class RatChessComponent extends ChessComponent {
         rank = 1;
         if (chessComponents[destination.getX()][destination.getY()] instanceof RiverChessComponent){
             rank = 9;}
-        boolean flag = false;
-        boolean Xi = false;
+        boolean nengzou = false;
+        boolean heli = false;
         for (int i = 0; i < 12; i++) {
             if (source.getX() == Chessboard.riverRegionRow[i] && source.getY() == Chessboard.riverRegionCol[i]){
-                flag = true;
+                heli = true;
                 break;
             }
         }
-        boolean Jinghua = true;
+        boolean qufeihe = true;
         for (int i = 0; i < 12; i++) {
             if (destination.getX() == Chessboard.riverRegionRow[i] || destination.getY() == Chessboard.riverRegionCol[i]){
-                Jinghua = false;
+                qufeihe = false;
                 break;
             }
         }
         if (chessComponents[destination.getX()][destination.getY()].getRank() == 8)
-            Xi=true;
+            nengzou=true;
         if (chessComponents[destination.getX()][destination.getY()] instanceof DenChessComponent){
             if ((chessComponents[destination.getX()][destination.getY()]).chessColor == this.chessColor)
                 return false;
         }
         if (source.getX() == destination.getX()) {
             if (Math.abs(source.getY() - destination.getY()) == 1)
-                Xi=true;
+                nengzou=true;
         }
         if (source.getY() == destination.getY()) {
             if (Math.abs(source.getX() - destination.getX()) == 1)
-                Xi=true;
+                nengzou=true;
         }
 
-        if(flag&&Jinghua){
-            if(Xi){rank=1;
+        if(heli&&qufeihe){
+            if(nengzou){rank=1;
                 if (chessComponents[destination.getX()][destination.getY()].getRank() >= 1){
                     rank=9;
                     return false;
@@ -126,13 +126,8 @@ public class RatChessComponent extends ChessComponent {
             }
         }
         else{
-            if(Xi){
-                if(chessComponents[destination.getX()][destination.getY()].getRank() > this.rank && chessComponents[destination.getX()][destination.getY()].getRank()!=8 ){
-                    return false;
-                }
-                else {
-                    return true;
-                }
+            if(nengzou&&!(qufeihe)){
+                return true;
             }
             return false;
         }
@@ -163,3 +158,4 @@ public class RatChessComponent extends ChessComponent {
         }
     }
 }
+

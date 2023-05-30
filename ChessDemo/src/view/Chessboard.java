@@ -12,23 +12,14 @@ import java.util.List;
  * 这个类表示面板上的棋盘组件对象
  */
 public class Chessboard extends JComponent {
-    /**
-     * CHESSBOARD_SIZE： 棋盘是8 * 8的
-     * <br>
-     * BACKGROUND_COLORS: 棋盘的两种背景颜色
-     * <br>
-     * chessListener：棋盘监听棋子的行动
-     * <br>
-     * chessboard: 表示8 * 8的棋盘
-     * <br>
-     * currentColor: 当前行棋方
-     */
     private static final int CHESSBOARD_ROW = 9;
     private static final int CHESSBOARD_COL = 7;
 
     private final ChessComponent[][] chessComponents = new ChessComponent[CHESSBOARD_ROW][CHESSBOARD_COL];
     public static final int[] riverRegionRow = {3,3,4,4,5,5,3,3,4,4,5,5};
     public static final int[] riverRegionCol = {1,2,1,2,1,2,4,5,4,5,4,5};
+    public static final int[] trapRegionRow = {0,0,1,7,8,8};
+    public static final int[] trapRegionCol = {2,4,3,3,2,4};
     public static ChessColor currentColor = ChessColor.BLUE;
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
@@ -42,7 +33,23 @@ public class Chessboard extends JComponent {
     public static boolean GameOver = false;
 
 
+    public boolean IsInRiver(int x, int y){
+        for (int i = 0; i < 12; i++) {
+            if (x == Chessboard.riverRegionRow[i] && y == Chessboard.riverRegionCol[i]){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean IsTrap(int x, int y){
+        for (int i = 0; i < 6; i++) {
+            if (x == Chessboard.trapRegionRow[i] && y == Chessboard.trapRegionCol[i]){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public Chessboard(int width, int height) {
         setLayout(null); // Use absolute layout.
@@ -120,20 +127,52 @@ public class Chessboard extends JComponent {
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         // Note that chess1 has higher priority, 'destroys' chess2 if exists.
-        if (!(chess2 instanceof EmptySlotComponent) && !(chess2 instanceof RiverChessComponent) &&
-        !(chess2 instanceof TrapChessComponent) && !(chess2 instanceof DenChessComponent)) {
+        System.out.println(chess1.getChessboardPoint().getX());
+        System.out.println(chess1.getChessboardPoint().getY());
+        if (!(chess2 instanceof EmptySlotComponent) && !(chess2 instanceof RiverChessComponent) && (!(chess2 instanceof TrapChessComponent)) && (!(chess2 instanceof DenChessComponent))){
             if(chess2.getChessColor() == ChessColor.RED){
                 NumberOfRed--;
             }else{
                 NumberOfBlue--;
             }
             remove(chess2);
+            System.out.println("wtm");
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
         }
-        if (chess2 instanceof RiverChessComponent || chess1 instanceof RiverChessComponent) {
+        //河流//
+        else if (IsInRiver(chess1.getChessboardPoint().getX(),chess1.getChessboardPoint().getY()) && !(IsInRiver(chess2.getChessboardPoint().getX(),chess2.getChessboardPoint().getY()))) {
+            System.out.println("初生");
+            remove(chess2);
+            add(chess2 = new RiverChessComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+        }
+        else if (IsInRiver(chess2.getChessboardPoint().getX(),chess2.getChessboardPoint().getY()) && !(IsInRiver(chess1.getChessboardPoint().getX(),chess1.getChessboardPoint().getY()))){
+            System.out.println("fuck");
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+        }
+        else if (IsInRiver(chess1.getChessboardPoint().getX(),chess1.getChessboardPoint().getY()) && IsInRiver(chess2.getChessboardPoint().getX(),chess2.getChessboardPoint().getY())) {
+            System.out.println("nmd");
+            //add(chess2 = new RiverChessComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+        }
+        //陷阱//
+        else if (IsTrap(chess1.getChessboardPoint().getX(),chess1.getChessboardPoint().getY()) && !(IsTrap(chess2.getChessboardPoint().getX(),chess2.getChessboardPoint().getY()))) {
+            System.out.println("小初生");
+            remove(chess2);
+            add(chess2 = new RiverChessComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+        }
+        else if (IsTrap(chess2.getChessboardPoint().getX(),chess2.getChessboardPoint().getY()) && !(IsTrap(chess1.getChessboardPoint().getX(),chess1.getChessboardPoint().getY()))){
+            System.out.println("mfuck");
+            add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+        }
+        else if (IsTrap(chess1.getChessboardPoint().getX(),chess1.getChessboardPoint().getY()) && IsTrap(chess2.getChessboardPoint().getX(),chess2.getChessboardPoint().getY())) {
+            System.out.println("ntmd");
+            //add(chess2 = new RiverChessComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+        }
+
+        else {
+            System.out.println("Haha");
         }
         chess1.swapLocation(chess2);
+
         if(chess2 instanceof DenChessComponent){
             if(chess2.getChessColor() == ChessColor.RED){
                 IsBlueReachDen = true;
@@ -147,9 +186,13 @@ public class Chessboard extends JComponent {
         chessComponents[row2][col2] = chess2;
 
         chess1.repaint();
+
         chess2.repaint();
 
         ClickController.Round+=0.5;
+
+        System.out.println(NumberOfBlue);
+        System.out.println(NumberOfRed);
         IsWin();
     }
 
@@ -267,3 +310,4 @@ public class Chessboard extends JComponent {
         chessData.forEach(System.out::println);
     }
 }
+

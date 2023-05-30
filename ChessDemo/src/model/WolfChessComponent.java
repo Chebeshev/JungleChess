@@ -77,6 +77,14 @@ public class WolfChessComponent extends ChessComponent {
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
+        boolean Guo = false;
+        boolean Xiangchong = false;
+        if(chessComponents[destination.getX()][destination.getY()] instanceof TrapChessComponent){
+            rank = 0;
+        }
+        if((chessComponents[source.getX()][source.getY()] instanceof TrapChessComponent)){
+            Guo = true;
+        }
         if (chessComponents[destination.getX()][destination.getY()] instanceof RiverChessComponent)
             return false;
         if (chessComponents[destination.getX()][destination.getY()].getRank() > this.rank)
@@ -87,11 +95,17 @@ public class WolfChessComponent extends ChessComponent {
         }
         if (source.getX() == destination.getX()) {
             if (Math.abs(source.getY() - destination.getY()) == 1)
-                return true;
+                Xiangchong = true;
         }
         if (source.getY() == destination.getY()) {
             if (Math.abs(source.getX() - destination.getX()) == 1)
-                return true;
+                Xiangchong = true;
+        }
+        if(Xiangchong){
+            if(Guo){
+                rank = chessComponents[destination.getX()][destination.getY()].getRank();
+            }
+            return true;
         }
         return false;
     }
@@ -120,3 +134,4 @@ public class WolfChessComponent extends ChessComponent {
         }
     }
 }
+

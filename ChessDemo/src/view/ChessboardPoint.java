@@ -25,3 +25,4 @@ public class ChessboardPoint {
         return "("+x + ","+y+") " + "on the chessboard is clicked!";
     }
 }
+
